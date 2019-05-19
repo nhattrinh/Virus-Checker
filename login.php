@@ -14,19 +14,22 @@
 <?php
 	require_once 'db_login.php'; // login credentials for MySQL
 	require_once 'mysql_methods.php'; // programmer defined mysql methods to prevent hacking attempts
-	require_once 'verify_session.php'; // programmer defined methods to prevent session hijacking
+	require_once 'session_verification.php'; // programmer defined methods to prevent session hijacking
 
 	verify_session(basename(__FILE__)); // check the session
 
+	function fixString($conn, $string) {
+		if (get_magic_quotes_gpc()) $string = stripslashes($string);
+		return $conn->real_escape_string($string);
+	}
+
 	if (isset($_POST['email']) && isset($_POST['password'])) {
 		
-		// connecting to a MySQL database
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
 		
-		// prevent hacking attempts: SQL injections
-		$un = mysql_fix_string($conn, $_POST['email']); 
-		$pw = mysql_fix_string($conn, $_POST['password']);
+		$un = fixString($conn, $_POST['email']); 
+		$pw = fixString($conn, $_POST['password']);
 
 		// check if user exists in users table
 		if (user_in_users_tbl($conn, $un, $pw) === false)
@@ -67,7 +70,7 @@
 				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);	
 				echo '<script>
 						alert("Hi: '. $fn . ', you are now logged in as '. $un . '"); 
-						window.location = "infected_file.php";
+						window.location = "file_check.php";
 				      </script>';
 			}
 			else // invalid password
@@ -111,7 +114,7 @@
 				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);	
 				echo '<script>
 						alert("Hi, admin: '. $fn . ', you are now logged in as '. $un . '"); 
-						window.location = "infected_file.php";
+						window.location = "file_check.php";
 				      </script>';
 			}
 			else // invalid password

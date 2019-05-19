@@ -6,7 +6,7 @@
 	<form  method="post">
 		<input name="email"    type="email"    placeholder="email"    maxlength="128" required="" />
 		<input name="password" type="password" placeholder="password" maxlength="128" required="" />
-		<button type="submit" formaction="remove_user.php">delete</button>	
+		<button type="submit" formaction="delete_account.php">delete</button>	
 	<form>
 </html>
 
@@ -14,16 +14,21 @@
 <?php
 	require_once 'db_login.php'; 
 	require_once 'mysql_methods.php'; 
-	require_once 'verify_session.php';
+	require_once 'session_verification.php';
 
 	verify_session(basename(__FILE__)); // check the session
+
+	function fixString($conn, $string) {
+		if (get_magic_quotes_gpc()) $string = stripslashes($string);
+		return $conn->real_escape_string($string);
+	}
 
 	if (isset($_POST['email']) && isset($_POST['password'])) {
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
 		
-		$un = mysql_fix_string($conn, $_POST['email']); 
-		$pw = mysql_fix_string($conn, $_POST['password']);
+		$un = fixString($conn, $_POST['email']); 
+		$pw = fixString($conn, $_POST['password']);
 
 		if ($result = $conn->prepare("SELECT id, fname, lname, username, password, salt1, salt2 FROM users NATURAL JOIN salt WHERE username=?;")) { 
 			$result->bind_param('s', $un); 
@@ -64,11 +69,11 @@
 				</script>';
 			}
 			else {
-				echo '<script> alert("Invalid username/password combination"); window.location = "remove_user.php"; </script>';
+				echo '<script> alert("Invalid username/password combination"); window.location = "delete_account.php"; </script>';
 			}
 		}
 		else {
-			echo '<script> alert("Invalid username/password combination"); window.location = "remove_user.php"; </script>';
+			echo '<script> alert("Invalid username/password combination"); window.location = "delete_account.php"; </script>';
 		}
 		$result->close(); 
 		$conn->close(); 

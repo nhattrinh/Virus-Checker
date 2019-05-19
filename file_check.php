@@ -1,6 +1,6 @@
 <?php
 
-	require_once 'verify_session.php'; // programmer defined methods to prevent session hijacking
+	require_once 'session_verification.php'; // programmer defined methods to prevent session hijacking
 
 	verify_session(basename(__FILE__)); // check the session
 ?>
@@ -10,7 +10,7 @@
 <html>
 <title>Infected File</title>
 <center>
-	<div><form action="infected_file.php" method="post" enctype="multipart/form-data">
+	<div><form action="file_check.php" method="post" enctype="multipart/form-data">
 		<br><h1>Submit a File to Check</h1><br/><br/><br/><br/>
 		<input name="check_file" type="file" required=""/>
 		<br/><br/>
@@ -21,7 +21,7 @@
 		if (isset($_SESSION['admin'])) 
 		{
 			echo <<<_END
-				<div><form action="infected_file.php" method="post" enctype="multipart/form-data">
+				<div><form action="file_check.php" method="post" enctype="multipart/form-data">
 				<br><font size="5"><b>Add Infected File Submission</b></font><br><br>
 				<input name="virus_name" type="text" placeholder="Virus Name" required=""><br><br>
 				<input name="add_virus"  type="file" required=""/>
@@ -31,7 +31,7 @@ _END;
 		}
 	?>
 	<form>
-		<br><button type="submit" formaction="user_logout.php">Logout</button><br><br>
+		<br><button type="submit" formaction="logout.php">Logout</button><br><br>
 	</form>
 </center>
 </html>
@@ -39,6 +39,11 @@ _END;
 <?php
 	require_once 'db_login.php'; 
 	require_once 'mysql_methods.php'; 
+
+	function fixString($conn, $string) {
+		if (get_magic_quotes_gpc()) $string = stripslashes($string);
+		return $conn->real_escape_string($string);
+	}
 									  
 	if(isset($_FILES['check_file']['name']) && (isset($_SESSION['user']) || isset($_SESSION['admin'])))
 	{
@@ -57,7 +62,7 @@ _END;
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
 
-		$name = mysql_fix_string($conn, $_POST['virus_name']);
+		$name = fixString($conn, $_POST['virus_name']);
 
 		move_uploaded_file($_FILES['add_virus']['tmp_name'], $_FILES['add_virus']['name']);
 		$sig = signature_hex($_FILES['add_virus']['name'], $_FILES['add_virus']['size']);
@@ -131,7 +136,7 @@ _END;
 		}
 
 		if(!$infected)
-			echo '<script> alert("Secure file"); window.location = "infected_file.php"; </script>';
+			echo '<script> alert("Secure file"); window.location = "file_check.php"; </script>';
 		//print_r($infectied_pos);
 		//show_infected_file_results($infected_bytes, $infectied_pos, $virus_list);
 		show_infected_file_results($infected_bytes, $virus_list);
@@ -141,7 +146,7 @@ _END;
 	function add_virus($conn, $name, $sig)
 	{
 		if (record_exist_virus_tbl($conn, $name, $sig)) {
-			echo '<script> alert("Duplicate record"); window.location = "infected_file.php"; </script>';
+			echo '<script> alert("Duplicate record"); window.location = "file_check.php"; </script>';
 			exit;
 		}
 

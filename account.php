@@ -14,7 +14,7 @@
 </html>
 
 <?php
-	require_once 'verify_session.php';
+	require_once 'session_verification.php';
 	require_once 'db_login.php';
 
 	//Sanitize inputs

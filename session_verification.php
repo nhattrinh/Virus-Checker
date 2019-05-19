@@ -6,12 +6,12 @@
 		if (different_user()) {
 			destroy_session_and_data();
 			echo '<script> alert("Log in again due to a technical error."); window.location = "index.php"; </script>';
-		} else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $current_page !== 'infected_file.php') {
-			header('Location: infected_file.php');
+		} else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $current_page !== 'file_check.php') {
+			header('Location: file_check.php');
 			exit;
 		}
-		else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $current_page === 'infected_file.php') {
-		} else if ((!isset($_SESSION['user']) || !isset($_SESSION['admin'])) && $current_page === 'infected_file.php') {
+		else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $current_page === 'file_check.php') {
+		} else if ((!isset($_SESSION['user']) || !isset($_SESSION['admin'])) && $current_page === 'file_check.php') {
 			header('Location: index.php');
 		} else {
 			session_destroy();
