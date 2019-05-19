@@ -15,7 +15,6 @@
 
 <?php
 	require_once 'verify_session.php';
-	require_once 'mysql_methods.php';
 	require_once 'login.php';
 
 	//Sanitize inputs
@@ -29,11 +28,11 @@
 	}
 
 	//Random string
-	function rand_string( $length ) {
+	function rand_string($length) {
 	    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	    $size = strlen($chars);
 	    for($i = 0; $i < $length; $i++){
-	        $str .= $chars[ rand( 0, $size - 1 ) ];
+	        $str .= $chars[rand(0, $size - 1)];
 	    }
 	    return $str;
 	}
