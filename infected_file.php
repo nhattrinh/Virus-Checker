@@ -7,28 +7,15 @@
 
 <!-- HTML Form -->
 <!DOCTYPE html>
-<style type="text/css">
-div {
-	border-style: solid;
-    border-color: #0055A2;
-    border-width: 25px;
-    background-color: #E5A823;
-}
-table, th, td { 
-    text-align: left;
-    font-family: "Times New Roman", Times, serif;
-    border: 1px solid black; 
-}
-</style>
 <html>
 <title>Infected File</title>
 <center>
-	<img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/San_Jose_State_Spartans_logo.svg/747px-San_Jose_State_Spartans_logo.svg.png" height="200" width="200"><br>
-	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/San_Jose_State_text_logo_2006-2012.svg/1200px-San_Jose_State_text_logo_2006-2012.svg.png" height="100" width="300"><br><br>
 	<div><form action="infected_file.php" method="post" enctype="multipart/form-data">
-		<br><font size="5"><b>Check Infected File Submission</b></font><br><br><br><br>
+		<br><h1>Submit a File to Check</h1><br/><br/><br/><br/>
 		<input name="check_file" type="file" required=""/>
-		<button type="submit">File Check</button><br><br>
+		<br/><br/>
+		<button type="submit">Submit</button>
+		<br/><br/>
 	</form></div>
 	<?php
 		if (isset($_SESSION['admin'])) 
@@ -50,43 +37,36 @@ _END;
 </html>
 
 <?php
-	require_once 'login.php'; // login credentials for MySQL
-	require_once 'mysql_methods.php'; // programmer defined mysql methods to prevent hacking attempts
-									  //  and methods to destroy a session and prevent session hijacking
+	require_once 'login.php'; 
+	require_once 'mysql_methods.php'; 
+									  
 	if(isset($_FILES['check_file']['name']) && (isset($_SESSION['user']) || isset($_SESSION['admin'])))
 	{
-		// connecting to a MySQL database
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
 
-		// file signature
 		move_uploaded_file($_FILES['check_file']['tmp_name'], $_FILES['check_file']['name']);
 		$sig = signature_hex($_FILES['check_file']['name'], $_FILES['check_file']['size']);
-		scan_file($conn, $sig); // check if file is infected
+		scan_file($conn, $sig);
 
-		$conn->close(); // close connection
+		$conn->close();
 	}
 
 	if(isset($_FILES['add_virus']['name']) && isset($_POST['virus_name']) && isset($_SESSION['admin']))
 	{
-		// connecting to a MySQL database
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
 
-		// virus name
 		$name = mysql_fix_string($conn, $_POST['virus_name']);
 
-		// file signature
 		move_uploaded_file($_FILES['add_virus']['tmp_name'], $_FILES['add_virus']['name']);
 		$sig = signature_hex($_FILES['add_virus']['name'], $_FILES['add_virus']['size']);
 
-		// first 20 bytes
  		$sig = substr($sig, 0, 20);
 
- 		// add virus name and signature to virus table
  		add_virus($conn, $name, $sig);
 
-		$conn->close(); // close connection
+		$conn->close();
 	}
 
 	function signature_hex($file, $size) 
@@ -168,11 +148,10 @@ _END;
  		$date  = date("Y-m-d");
 		$time  = date("H:i:s");
 
-		// add data to table virus
 		if ($result = $conn->prepare("INSERT INTO virus(name, signature, date, time) VALUES(?,?,?,?)")) { // create a prepare statement
-			$result->bind_param('ssss', $name, $sig, $date, $time); // bind parameters for markers
-			$result->execute(); // execute query
-			$result->close(); // close statement
+			$result->bind_param('ssss', $name, $sig, $date, $time);
+			$result->execute();
+			$result->close();
 			echo '<script> alert("Virus added"); </script>';
 			show_recorded_inserted($conn, $name, $sig);
 		}
@@ -182,17 +161,16 @@ _END;
 
 	function record_exist_virus_tbl($conn, $name, $sig)
 	{
-		// search if virus name and signature exists in virus table
 
 		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) { // create a prepare statement
-			$result->bind_param('ss', $name, $sig); // bind parameters for markers
-			$result->execute(); // execute query
-			$result->store_result(); // store result
+			$result->bind_param('ss', $name, $sig);
+			$result->execute();
+			$result->store_result();
 		}
 		else 
 			mysql_fatal_error($conn->error);
 		
-		if ($result->num_rows == 1) {// virus name and signature exists in virus table
+		if ($result->num_rows == 1) {
 			$result->close();
 			return true;
 		}
@@ -206,16 +184,15 @@ _END;
 	{
 
 		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) { // create a prepare statement
-			$result->bind_param('ss', $name, $sig); // bind parameters for markers
-			$result->execute(); // execute query
-			$result->store_result(); // store result
+			$result->bind_param('ss', $name, $sig); 
+			$result->execute(); 
+			$result->store_result(); 
 		}
 		else 
 			mysql_fatal_error($conn->error);
-		/* fetch values */
 		if ($result->num_rows == 1) {
-			$result->bind_result($name, $sig, $date, $time, $id); // bind result variables
-			$result->fetch(); // fetch value
+			$result->bind_result($name, $sig, $date, $time, $id); 
+			$result->fetch(); 
 			echo "<center><b><font color='green'>Added Record to Database: CS 174 and Table: Virus</font></b></center><br><br>";
 			echo "<center><table>
 			<tr>
