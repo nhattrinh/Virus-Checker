@@ -52,7 +52,7 @@
 			// retrieve salt values
 			$salt1 = $s1;
 			$salt2 = $s2;
-			$token = hash('ripemd128', "$salt1$pw$salt2");
+			$token = hash('md5', "$salt1$pw$salt2");
 
 			// verify user's password
 			if ($token === $db_pw) { // valid password
@@ -62,7 +62,7 @@
 				$_SESSION['user'] = 1;
 				// preventing session hijacking
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-				$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 				echo '<script>
 						alert("Hi: '. $fn . ', you are now logged in as '. $un . '");
 						window.location = "infected_file.php";
@@ -96,7 +96,7 @@
 			// retrieve salt values
 			$salt1 = $s1;
 			$salt2 = $s2;
-			$token = hash('ripemd128', "$salt1$pw$salt2");
+			$token = hash('md5', "$salt1$pw$salt2");
 
 			// verify user's password
 			if ($token === $db_pw) { // valid password
@@ -106,7 +106,7 @@
 				$_SESSION['admin'] = 1;
 				// preventing session hijacking
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-				$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 				echo '<script>
 						alert("Hi, admin: '. $fn . ', you are now logged in as '. $un . '");
 						window.location = "infected_file.php";
