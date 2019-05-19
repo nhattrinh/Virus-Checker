@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<title>Sign Up</title>
-	<link rel="stylesheet" type="text/css" href="index_css.css">
 	<body>
 		<form method="post">
 	    <input name="fname" type="text" placeholder="First Name" required />

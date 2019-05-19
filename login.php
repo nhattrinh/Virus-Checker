@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<title>Login</title>
-	<link rel = "stylesheet" type = "text/css" href = "index_css.css">
 	<form  formaction="login.php" method="post">
 		<input name="email" type="email" placeholder="email" />
 		<input name="password" type="password" placeholder="password" />
