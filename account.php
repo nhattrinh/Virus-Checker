@@ -15,7 +15,7 @@
 
 <?php
 	require_once 'verify_session.php';
-	require_once 'login.php';
+	require_once 'db_login.php';
 
 	//Sanitize inputs
 	function sanitize($input){
@@ -77,7 +77,7 @@
 
 			mysqli_refresh($conn, MYSQLI_REFRESH_LOG);
 			alert("Account successfully created");
-			header("location: authenticate.php");
+			header("location: login.php");
 		}else{
 			alert("Invalid username/password combination");
 			header("location: account.php");

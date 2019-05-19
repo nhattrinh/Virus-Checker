@@ -37,7 +37,7 @@ _END;
 </html>
 
 <?php
-	require_once 'login.php'; 
+	require_once 'db_login.php'; 
 	require_once 'mysql_methods.php'; 
 									  
 	if(isset($_FILES['check_file']['name']) && (isset($_SESSION['user']) || isset($_SESSION['admin'])))

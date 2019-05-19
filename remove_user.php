@@ -12,7 +12,7 @@
 
 
 <?php
-	require_once 'login.php'; 
+	require_once 'db_login.php'; 
 	require_once 'mysql_methods.php'; 
 	require_once 'verify_session.php';
 
