@@ -54,7 +54,7 @@
 			$result->execute();
 			$result->store_result();
 		}else{
-			mysqli_error($conn)
+			mysqli_error($conn);
 		}
 
 		//If the username does not exist else it does exist
@@ -68,13 +68,12 @@
 				$stmt->execute();
 				$stmt->close();
 			}else{
-				mysqli_error($conn)
-
+				mysqli_error($conn);
 			}
 
 			$query = "INSERT INTO salt(salt1, salt2) VALUES('$salt1', '$salt2')";
 			$result = $conn->query($query);
-			if (!$result) mysqli_error($conn)
+			if (!$result) mysqli_error($conn);
 
 			mysqli_refresh($conn, MYSQLI_REFRESH_LOG);
 			alert("Account successfully created");

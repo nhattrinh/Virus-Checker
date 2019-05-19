@@ -39,7 +39,7 @@
 
 			$salt1 = $s1;
 			$salt2 = $s2;
-			$token = hash('ripemd128', "$salt1$pw$salt2");
+			$token = hash('md5', "$salt1$pw$salt2");
 
 			if ($token === $db_pw) { 
 				if ($del_user = $conn->prepare("DELETE FROM users WHERE id=?")) { 
