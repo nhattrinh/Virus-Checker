@@ -59,9 +59,9 @@
 
 		//If the username does not exist else it does exist
 		if ($result->num_rows == 0) {
-			$salt1 = rand_string();
-			$salt2 = rand_string();
-			$token = hash('ripemd128', "$salt1$pw$salt2");
+			$salt1 = rand_string(4);
+			$salt2 = rand_string(4);
+			$token = hash('md5', "$salt1$pw$salt2");
 
 			if ($stmt = $conn->prepare("INSERT INTO users(fname, lname, username, password) VALUES(?,?,?,?);")) {
 				$stmt->bind_param('ssss', $fname, $lname, $un, $token);
@@ -78,7 +78,7 @@
 
 			mysqli_refresh($conn, MYSQLI_REFRESH_LOG);
 			alert("Account successfully created");
-			header("location: login.php");
+			header("location: authenticate.php");
 		}else{
 			alert("Invalid username/password combination");
 			header("location: account.php");
