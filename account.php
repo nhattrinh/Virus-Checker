@@ -40,7 +40,7 @@
 
 	verify_session(basename(__FILE__));
 	$conn = new mysqli($hn, $un, $pw, $db);
-	if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
+	if ($conn->connect_error) mysqli_error($conn);
 
 	if (isset($_POST['email']) && isset($_POST['password'])) {
 
@@ -55,7 +55,7 @@
 			$result->execute();
 			$result->store_result();
 		}else{
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn)
 		}
 
 		//If the username does not exist else it does exist
@@ -69,13 +69,13 @@
 				$stmt->execute();
 				$stmt->close();
 			}else{
-				mysql_fatal_error($conn->error);
+				mysqli_error($conn)
 
 			}
 
 			$query = "INSERT INTO salt(salt1, salt2) VALUES('$salt1', '$salt2')";
 			$result = $conn->query($query);
-			if (!$result) mysql_fatal_error($conn->error);
+			if (!$result) mysqli_error($conn)
 
 			mysqli_refresh($conn, MYSQLI_REFRESH_LOG);
 			alert("Account successfully created");

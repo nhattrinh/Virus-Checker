@@ -1,10 +1,11 @@
+<!-- HTML Login Form -->
 <!DOCTYPE html>
 <html>
 	<title>Delete Account</title>
 	<link rel = "stylesheet" type = "text/css" href = "index_css.css">
 	<form  method="post">
-		<input name="email"    type="email"    placeholder="email" />
-		<input name="password" type="password" placeholder="password" />
+		<input name="email"    type="email"    placeholder="email"    maxlength="128" required="" />
+		<input name="password" type="password" placeholder="password" maxlength="128" required="" />
 		<button type="submit" formaction="remove_user.php">delete</button>	
 	<form>
 </html>
@@ -38,7 +39,7 @@
 
 			$salt1 = $s1;
 			$salt2 = $s2;
-			$token = hash('md5', "$salt1$pw$salt2");
+			$token = hash('ripemd128', "$salt1$pw$salt2");
 
 			if ($token === $db_pw) { 
 				if ($del_user = $conn->prepare("DELETE FROM users WHERE id=?")) { 
@@ -58,18 +59,17 @@
 
 				echo 
 				'<script>
-					alert("Hi: '. $fn . ', you have deleted your account '. $un . '"); 
+					alert("Hi: '. $fn . ', you\'ve successfully deleted your account '. $un . '"); 
 					window.location = "index.php";
 				</script>';
 			}
 			else {
-				echo '<script> alert("Invalid login credentials, try again."); window.location = "remove_user.php"; </script>';
+				echo '<script> alert("Invalid username/password combination"); window.location = "remove_user.php"; </script>';
 			}
 		}
 		else {
-			echo '<script> alert("Invalid login credentials, try again."); window.location = "remove_user.php"; </script>';
+			echo '<script> alert("Invalid username/password combination"); window.location = "remove_user.php"; </script>';
 		}
-
 		$result->close(); 
 		$conn->close(); 
 	}
