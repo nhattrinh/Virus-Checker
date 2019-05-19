@@ -11,52 +11,42 @@
 </html>
 
 
-<!-- PHP Remove User and Salt Value -->
 <?php
-	require_once 'login.php'; // login credentials for MySQL
-	require_once 'mysql_methods.php'; // programmer defined mysql methods to prevent hacking attempts
-	require_once 'verify_session.php'; // programmer defined methods to prevent session hijacking
+	require_once 'login.php'; 
+	require_once 'mysql_methods.php'; 
+	require_once 'verify_session.php';
 
 	verify_session(basename(__FILE__)); // check the session
 
 	if (isset($_POST['email']) && isset($_POST['password'])) {
-
-		// connecting to a MySQL database
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
 		
-		// prevent hacking attempts: SQL injections
 		$un = mysql_fix_string($conn, $_POST['email']); 
 		$pw = mysql_fix_string($conn, $_POST['password']);
 
-		// search if user exists
-		if ($result = $conn->prepare("SELECT id, fname, lname, username, password, salt1, salt2 FROM users NATURAL JOIN salt WHERE username=?;")) { // create a prepare statement
-			$result->bind_param('s', $un); // bind parameters for markers
-			$result->execute(); // execute query
-			$result->store_result(); // store result
+		if ($result = $conn->prepare("SELECT id, fname, lname, username, password, salt1, salt2 FROM users NATURAL JOIN salt WHERE username=?;")) { 
+			$result->bind_param('s', $un); 
+			$result->execute(); 
+			$result->store_result(); 
 		}
 		else 
 			mysql_fatal_error($conn->error);
 
-		if ($result->num_rows == 1) { // user exists
-			$result->bind_result($id, $fn, $sn, $un, $db_pw, $s1, $s2); // bind result variables
-			$result->fetch(); // fetch value
+		if ($result->num_rows == 1) { 
+			$result->bind_result($id, $fn, $sn, $un, $db_pw, $s1, $s2); 
+			$result->fetch(); 
 
-			// retrieve salt values
 			$salt1 = $s1;
 			$salt2 = $s2;
 			$token = hash('ripemd128', "$salt1$pw$salt2");
 
-			// verify user's password
-			if ($token === $db_pw) { // valid password
-				// delete data from table users and from table salt
-				if ($del_user = $conn->prepare("DELETE FROM users WHERE id=?")) { // create a prepare statement for users
-					if($del_salt = $conn->prepare("DELETE FROM salt WHERE id=?")) { // create a prepare statement for salt 
-						// delete data from table users
+			if ($token === $db_pw) { 
+				if ($del_user = $conn->prepare("DELETE FROM users WHERE id=?")) { 
+					if($del_salt = $conn->prepare("DELETE FROM salt WHERE id=?")) { 
 						$del_user->bind_param('i', $id);
 						$del_user->execute();
 						$del_user->close();
-						// delete data from table salt
 						$del_salt->bind_param('i', $id);
 						$del_salt->execute();
 						$del_salt->close();
@@ -73,13 +63,14 @@
 					window.location = "index.php";
 				</script>';
 			}
-			else // invalid password
+			else {
 				echo '<script> alert("Invalid username/password combination"); window.location = "remove_user.php"; </script>';
+			}
 		}
-		else // user not exist
+		else {
 			echo '<script> alert("Invalid username/password combination"); window.location = "remove_user.php"; </script>';
-		
-		$result->close(); // close statement
-		$conn->close(); // close connection	
+		}
+		$result->close(); 
+		$conn->close(); 
 	}
 ?>
