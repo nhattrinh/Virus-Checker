@@ -255,15 +255,15 @@ authenticate.php
                     or password error.
                     Do not proceed any further steps. 
                     User may re-attempt login, repeating step 1.
-            2. Invoke the PHP hash function with 'md5' as the first argument and 
+            2. Invoke the PHP hash function with 'ripemd128' as the first argument and 
                the salt values and user filled password field as the second argument, eg 
                    "$salt1$pw$salt2"
 
-                   hash('md5', "$salt1$pw$salt2");
+                   hash('ripemd128', "$salt1$pw$salt2");
                 
 	       Store the result, a RIPEND-128 hash value, into a PHP variable.
 
-	           <PHP variable> = hash('md5', "$salt1$pw$salt2");
+	           <PHP variable> = hash('ripemd128', "$salt1$pw$salt2");
 
             3. Execute a search query of the hash value against the table 'users' for 
                the field 'password'
