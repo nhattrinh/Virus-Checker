@@ -1,16 +1,14 @@
-<!-- HTML Login Form -->
 <!DOCTYPE html>
 <html>
 	<title>Login</title>
 	<link rel = "stylesheet" type = "text/css" href = "index_css.css">
 	<form  formaction="authenticate.php" method="post">
-		<input name="email"    type="email"    placeholder="email"    maxlength="128" required="" />
-		<input name="password" type="password" placeholder="password" maxlength="128" required="" />
-		<button type="submit">login</button>	
+		<input name="email" type="email" placeholder="email" />
+		<input name="password" type="password" placeholder="password" />
+		<button type="submit">Login</button>
 	<form>
 </html>
 
-<!-- PHP Guest Authentication -->
 <?php
 	require_once 'login.php'; // login credentials for MySQL
 	require_once 'mysql_methods.php'; // programmer defined mysql methods to prevent hacking attempts
@@ -19,13 +17,13 @@
 	verify_session(basename(__FILE__)); // check the session
 
 	if (isset($_POST['email']) && isset($_POST['password'])) {
-		
+
 		// connecting to a MySQL database
 		$conn = new mysqli($hn, $un, $pw, $db);
 		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
-		
+
 		// prevent hacking attempts: SQL injections
-		$un = mysql_fix_string($conn, $_POST['email']); 
+		$un = mysql_fix_string($conn, $_POST['email']);
 		$pw = mysql_fix_string($conn, $_POST['password']);
 
 		// check if user exists in users table
@@ -44,9 +42,9 @@
 			$result->execute(); // execute query
 			$result->store_result(); // store result
 		}
-		else 
+		else
 			mysql_fatal_error($conn->error);
-		
+
 		if ($result->num_rows == 1) { // user exists in users table
 			$result->bind_result($fn, $db_pw, $s1, $s2); // bind result variables
 			$result->fetch(); // fetch value
@@ -64,9 +62,9 @@
 				$_SESSION['user'] = 1;
 				// preventing session hijacking
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-				$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);	
+				$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 				echo '<script>
-						alert("Hi: '. $fn . ', you are now logged in as '. $un . '"); 
+						alert("Hi: '. $fn . ', you are now logged in as '. $un . '");
 						window.location = "infected_file.php";
 				      </script>';
 			}
@@ -88,9 +86,9 @@
 			$result->execute(); // execute query
 			$result->store_result(); // store result
 		}
-		else 
+		else
 			mysql_fatal_error($conn->error);
-		
+
 		if ($result->num_rows == 1) { // user exists in admin table
 			$result->bind_result($fn, $db_pw, $s1, $s2); // bind result variables
 			$result->fetch(); // fetch value
@@ -108,9 +106,9 @@
 				$_SESSION['admin'] = 1;
 				// preventing session hijacking
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-				$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);	
+				$_SESSION['check'] = hash('ripemd128', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 				echo '<script>
-						alert("Hi, admin: '. $fn . ', you are now logged in as '. $un . '"); 
+						alert("Hi, admin: '. $fn . ', you are now logged in as '. $un . '");
 						window.location = "infected_file.php";
 				      </script>';
 			}
