@@ -25,7 +25,7 @@
 
 	if (isset($_POST['email']) && isset($_POST['password'])) {
 		$conn = new mysqli($hn, $un, $pw, $db);
-		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
+		if ($conn->connect_error) mysqli_error($conn->connect_error);
 		
 		$un = fixString($conn, $_POST['email']); 
 		$pw = fixString($conn, $_POST['password']);
@@ -36,7 +36,7 @@
 			$result->store_result(); 
 		}
 		else 
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn->error);
 
 		if ($result->num_rows == 1) { 
 			$result->bind_result($id, $fn, $sn, $un, $db_pw, $s1, $s2); 
@@ -57,10 +57,10 @@
 						$del_salt->close();
 					}
 					else 
-						mysql_fatal_error($conn->error);
+						mysqli_error($conn->error);
 				}
 				else 
-					mysql_fatal_error($conn->error);
+					mysqli_error($conn->error);
 
 				echo 
 				'<script>

@@ -26,7 +26,7 @@
 	if (isset($_POST['email']) && isset($_POST['password'])) {
 		
 		$conn = new mysqli($hn, $un, $pw, $db);
-		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
+		if ($conn->connect_error) mysqli_error($conn->connect_error);
 		
 		$un = fixString($conn, $_POST['email']); 
 		$pw = fixString($conn, $_POST['password']);
@@ -48,7 +48,7 @@
 			$result->store_result(); // store result
 		}
 		else 
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn->error);
 		
 		if ($result->num_rows == 1) { // user exists in users table
 			$result->bind_result($fn, $db_pw, $s1, $s2); // bind result variables
@@ -92,7 +92,7 @@
 			$result->store_result(); // store result
 		}
 		else 
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn->error);
 		
 		if ($result->num_rows == 1) { // user exists in admin table
 			$result->bind_result($fn, $db_pw, $s1, $s2); // bind result variables

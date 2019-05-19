@@ -48,7 +48,7 @@ _END;
 	if(isset($_FILES['check_file']['name']) && (isset($_SESSION['user']) || isset($_SESSION['admin'])))
 	{
 		$conn = new mysqli($hn, $un, $pw, $db);
-		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
+		if ($conn->connect_error) mysqli_error($conn->connect_error);
 
 		move_uploaded_file($_FILES['check_file']['tmp_name'], $_FILES['check_file']['name']);
 		$sig = signature_hex($_FILES['check_file']['name'], $_FILES['check_file']['size']);
@@ -60,7 +60,7 @@ _END;
 	if(isset($_FILES['add_virus']['name']) && isset($_POST['virus_name']) && isset($_SESSION['admin']))
 	{
 		$conn = new mysqli($hn, $un, $pw, $db);
-		if ($conn->connect_error) mysql_fatal_error($conn->connect_error);
+		if ($conn->connect_error) mysqli_error($conn->connect_error);
 
 		$name = fixString($conn, $_POST['virus_name']);
 
@@ -103,7 +103,7 @@ _END;
 		//$infectied_pos = array();
 		$query = "SELECT * FROM virus;";
 		$result = $conn->query($query);
-		if (!$result) mysql_fatal_error($conn->error);
+		if (!$result) mysqli_error($conn->error);
 
 		for ($i = 0; $i < $result->num_rows; $i++)
 		{
@@ -161,7 +161,7 @@ _END;
 			show_recorded_inserted($conn, $name, $sig);
 		}
 		else
-			mysql_fatal_error($conn->error); 	
+			mysqli_error($conn->error); 	
 	}
 
 	function record_exist_virus_tbl($conn, $name, $sig)
@@ -173,7 +173,7 @@ _END;
 			$result->store_result();
 		}
 		else 
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn->error);
 		
 		if ($result->num_rows == 1) {
 			$result->close();
@@ -194,7 +194,7 @@ _END;
 			$result->store_result(); 
 		}
 		else 
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn->error);
 		if ($result->num_rows == 1) {
 			$result->bind_result($name, $sig, $date, $time, $id); 
 			$result->fetch(); 
@@ -216,7 +216,7 @@ _END;
 		    echo "</table></center><br><br><br>";
 		}
 		else 
-			mysql_fatal_error($conn->error);
+			mysqli_error($conn->error);
 	}
 
 	function show_infected_file_results($infected_bytes, $list)
