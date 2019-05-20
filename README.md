@@ -33,11 +33,11 @@ git clone
 <img src= "https://github.com/NhatTrinh/Virus-Checker/blob/master/img/mount.png" width="400px"/>
 7. Go to your localhost 
 6. Go to http://localhost:8080/phpmyadmin/server_databases.php?server=1
-    a. Create a database, i.e cs174
-    b. Import the sql file into the database 
+- Create a database, i.e cs174
+- Import the sql file into the database 
     <img src= "https://github.com/NhatTrinh/Virus-Checker/blob/master/img/import.png" width="400px"/>
 7. Go to your localhost 
-    http://localhost:8080/Virus-Checker/index.php
+[Click Here](http://localhost:8080/Virus-Checker/index.php)
 
 ## Screenshots
 
