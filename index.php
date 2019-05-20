@@ -30,6 +30,7 @@
 	
 	<form  method="post">
 		<button type="submit" formaction="login.php" class="btn btn-outline-secondary waves-effect">Login</button><br><br>
+		<p>Not a member?</p>
 		<button type="submit" formaction="account.php" class="btn btn-outline-primary waves-effect">Create Account</button>
 		<button type="submit" formaction="delete_account.php" class="btn btn-outline-danger waves-effect">Delete Account</button>
 	</form>

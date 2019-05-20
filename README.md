@@ -10,12 +10,12 @@ Truc Vo <br/>
 
 ## Features
 These are some of the features we implemented in this project:
-- [x] Infected File: It is a File that contains a Virus.
-- [x] Putative Infected File: It is a File that might contain the Virus and needs to go under analysis.
-- [x] Allows the user to submit a putative infected file and shows if it is infected or not.
-- [x] The website will let register a user to the website as a Contributor, asking for username, email and password.
-- [x] Stores the information related to the Admin with username and password, in the most secure way of your knowledge.
-- [x] When a registered user, that is, a Contributor, logs in on the website, s/he can upload a Malware file and the relative signature is stored in a different table that the one containing the actual Malware information, containing putative malware that must be double checked by an Admi
+- [x] User Authenticatio
+- [x] Password Management
+- [x] File uploading
+- [x] Sessions and Cookies
+- [x] Client-side Validation
+- [x] Admin level integration
 
 ## Installing
 1. Clone the Repo
@@ -33,7 +33,10 @@ git clone
 - Create a database, i.e cs174 <br/>
 - Import the sql file into the database <br/>
     <img src= "https://github.com/NhatTrinh/Virus-Checker/blob/master/img/import.png" width="600px"/>
-7. Go to your localhost <br/> http://localhost:8080/Virus-Checker/index.php <br/>
+7. Go to your localhost <br/> 
+http://localhost:8080/Virus-Checker/index.php <br/>
 8. Login as admin with username "admin@sjsu.edu" and password "password"
+
+
 ## Screenshots
 

@@ -20,18 +20,21 @@
 </head>
 
 <center>
-	<div><form class="jumbotron jumbotron-fluid" action="file_check.php" method="post" enctype="multipart/form-data">
-		<div class="container">
+	<div>
+	<form class="jumbotron jumbotron-fluid" >
+		<div class="container" class="jumbotron jumbotron-fluid">
 			<br><h1 class="display-4">VIRUS SCANNING</h1><br/><br/><br/><br/>
 			<p class="lead">
-			The idea is to create a web-based Antivirus application that allows the users to upload a file 
-			(of any type) to check if it contains malicious content. 
-			That is, if it is a Malware or not.
+			Infected File: It is a File that contains a Virus.<br/>
+			Putative Infected File: It is a File that might contain the Virus and needs to go under analysis.
 			</p>
 		</div>
+	</form>
 	</div>
 
 	<div class="col-5">
+	<form action="file_check.php" method="post" enctype="multipart/form-data">
+	<p>UPLOAD YOUR FILE TO CHECK:</p><br/>
 		<div class="input-group">
 			<div class="input-group-prepend">
 				<span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
@@ -48,7 +51,8 @@
 	<button type="submit" class="btn btn-outline-primary waves-effect">Submit</button>
 
 	<br/><br/>
-	</form></div>
+	</form>
+	</div>
 	<?php
 		if (isset($_SESSION['admin'])) 
 		{
