@@ -7,15 +7,46 @@
 
 <!-- HTML Form -->
 <!DOCTYPE html>
+
 <html>
-<title>Infected File</title>
+<head>
+	<title>Infected File</title>
+	<meta charset="utf-8">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
 <center>
-	<div><form action="file_check.php" method="post" enctype="multipart/form-data">
-		<br><h1>Submit a File to Check</h1><br/><br/><br/><br/>
-		<input name="check_file" type="file" required=""/>
-		<br/><br/>
-		<button type="submit">Submit</button>
-		<br/><br/>
+	<div><form class="jumbotron jumbotron-fluid" action="file_check.php" method="post" enctype="multipart/form-data">
+		<div class="container">
+			<br><h1 class="display-4">VIRUS SCANNING</h1><br/><br/><br/><br/>
+			<p class="lead">
+			The idea is to create a web-based Antivirus application that allows the users to upload a file 
+			(of any type) to check if it contains malicious content. 
+			That is, if it is a Malware or not.
+			</p>
+		</div>
+	</div>
+
+	<div class="col-5">
+		<div class="input-group">
+			<div class="input-group-prepend">
+				<span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+			</div>
+			<div class="custom-file">
+			<input type="file" class="custom-file-input" name="check_file" required=""/>
+			<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+			</div>
+		</div>
+	</div>
+	<br/><br/>
+		
+	<button type="submit" class="btn btn-outline-primary waves-effect">Submit</button>
+
+	<br/><br/>
 	</form></div>
 	<?php
 		if (isset($_SESSION['admin'])) 
@@ -31,7 +62,8 @@ _END;
 		}
 	?>
 	<form>
-		<br><button type="submit" formaction="logout.php">Logout</button><br><br>
+		<br><button type="submit" formaction="logout.php" class="btn btn-outline-danger waves-effect">Logout</button>
+		<br><br>
 	</form>
 </center>
 </html>
