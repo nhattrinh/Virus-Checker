@@ -98,7 +98,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Alec','Leong','student@sjsu.edu','b8ba3c3df188c8782db15599917df59f',1);
+INSERT INTO `users` VALUES ('First','User','student@sjsu.edu','5f4dcc3b5aa765d61d8327deb882cf99',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

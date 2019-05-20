@@ -113,8 +113,11 @@
 				$_SESSION['admin'] = 1;
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
-				alert("Successful admin login!");
-				header('file_check.php');
+				
+				echo '<script>
+						alert("Successful admin login!"); 
+						window.location = "file_check.php";
+				      </script>';
 			} else {
 				alert("Error with username or password!");
 				header('login.php');

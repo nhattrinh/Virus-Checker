@@ -38,7 +38,7 @@
 			</div>
 			<div class="custom-file">
 			<input type="file" class="custom-file-input" name="check_file" required=""/>
-			<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+			<label class="custom-file-label" for="inputGroupFile01">Choose File</label>
 			</div>
 		</div>
 	</div>
@@ -52,11 +52,15 @@
 		if (isset($_SESSION['admin'])) 
 		{
 			echo <<<_END
-				<div><form action="file_check.php" method="post" enctype="multipart/form-data">
+				<div><form class="col-md-5" action="file_check.php" method="post" enctype="multipart/form-data">
 				<br><font size="5"><b>Add Infected File Submission</b></font><br><br>
-				<input name="virus_name" type="text" placeholder="Virus Name" required=""><br><br>
-				<input name="add_virus"  type="file" required=""/>
-				<button type="submit">Submit Infected</button><br><br>
+				<input class="form-control" name="virus_name" type="text" placeholder="Virus Name" required=""><br/>
+				<div class="custom-file">
+					<input type="file" class="custom-file-input" name="add_virus" required=""/>
+					<label class="custom-file-label">Choose Infected File</label>
+				</div>
+				<br/><br/>
+				<button class="btn btn-outline-secondary waves-effect" type="submit">Submit Infected</button><br><br>
 				</form></div><br>
 _END;
 		}
