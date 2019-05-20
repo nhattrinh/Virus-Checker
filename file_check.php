@@ -42,6 +42,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<br/><br/>
 		
 	<button type="submit" class="btn btn-outline-primary waves-effect">Submit</button>

@@ -12,12 +12,12 @@
 	<center>
 		<div class="col-6">
 		<form class="text-center border border-light p-5" method="post">
-			<p class="h4 mb-4">Sign Up</p>
+			<p class="h4 mb-4">Create Account</p>
 			<input name="fname" type="text" placeholder="First Name" required class="form-control mb-4"/>
 			<input name="lname" type="text" placeholder="Last Name" required class="form-control mb-4"/>
 			<input name="email" type="email" placeholder="Email" required class="form-control mb-4"/>
 			<input name="password" type="password" placeholder="Password" required class="form-control mb-4"/>
-			<button type="submit" value="Submit" formaction="account.php" class="btn btn-info btn-block my-4">Sign Up</button>
+			<button type="submit" value="Submit" formaction="account.php" class="btn btn-outline-primary btn-block my-4">Sign Up</button>
 		</form>
 		</div>
 
