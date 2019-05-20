@@ -70,7 +70,6 @@ _END;
 
 <?php
 	require_once 'db_login.php'; 
-	require_once 'mysql_methods.php'; 
 
 	function fixString($conn, $string) {
 		if (get_magic_quotes_gpc()) $string = stripslashes($string);

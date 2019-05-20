@@ -26,7 +26,6 @@
 
 <?php
 	require_once 'db_login.php'; 
-	require_once 'mysql_methods.php'; 
 	require_once 'session_verification.php';
 
 	verify_session(basename(__FILE__)); // check the session
