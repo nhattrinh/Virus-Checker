@@ -39,4 +39,5 @@ http://localhost:8080/Virus-Checker/index.php <br/>
 
 
 ## Screenshots
-
+<img src= "https://github.com/NhatTrinh/Virus-Checker/blob/master/img/home.png" width="600px"/>
+<img src= "https://github.com/NhatTrinh/Virus-Checker/blob/master/img/checkfile.png" width="600px"/>
