@@ -33,7 +33,7 @@ git clone
 - Create a database, i.e cs174 <br/>
 - Import the sql file into the database <br/>
     <img src= "https://github.com/NhatTrinh/Virus-Checker/blob/master/img/import.png" width="600px"/>
-7. Go to your localhost <br/> http://localhost:8080/Virus-Checker/index.php
+7. Go to your localhost <br/> http://localhost:8080/Virus-Checker/index.php <br/>
 8. Login as admin with username "admin@sjsu.edu" and password "password"
 ## Screenshots
 
