@@ -18,7 +18,7 @@
 		<!-- Password -->
 		<input name="password" type="password" placeholder="password" maxlength="128" required="" class="form-control mb-4"/>
 		<!-- Sign in button -->
-		<button class="btn btn-outline-primary btn-block my-4" type="submit">Sign in</button>
+		<button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
 		<!-- Register -->
 		<p>Not a member?
         <a href = "account.php">Register</a>
