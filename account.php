@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
-	<title>Sign Up</title>
-	<link rel="stylesheet" type="text/css" href="index_css.css">
-	<body>
-		<form method="post">
-	    <input name="fname" type="text" placeholder="First Name" required />
-	    <input name="lname" type="text" placeholder="Last Name" required />
-			<input name="email" type="email" placeholder="Email" required/>
-			<input name="password" type="password" placeholder="Password" required/>
-			<button type="submit" value="Submit" formaction="account.php">Sign Up</button>
+	<head>
+		<title>Sign Up</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	</head>
+	<center>
+		<div class="col-6">
+		<form class="text-center border border-light p-5" method="post">
+			<p class="h4 mb-4">Sign Up</p>
+			<input name="fname" type="text" placeholder="First Name" required class="form-control mb-4"/>
+			<input name="lname" type="text" placeholder="Last Name" required class="form-control mb-4"/>
+			<input name="email" type="email" placeholder="Email" required class="form-control mb-4"/>
+			<input name="password" type="password" placeholder="Password" required class="form-control mb-4"/>
+			<button type="submit" value="Submit" formaction="account.php" class="btn btn-info btn-block my-4">Sign Up</button>
 		</form>
-	</body>
+		</div>
+
+	</center>
 </html>
 
 <?php
