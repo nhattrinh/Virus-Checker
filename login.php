@@ -33,7 +33,7 @@
 	require_once 'session_verification.php';
 
 	//Alert function
-	function alert_popup($msg) {
+	function alert($msg) {
     echo "<script type='text/javascript'>alert('$msg');</script>";
 	}
 
@@ -78,11 +78,13 @@
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 
-				alert_popup("Successful login!");
-				header("file_check.php");
+				echo '<script>
+						alert("Successful login!");
+						window.location = "file_check.php";
+				      </script>';
 			} else {
-				alert_popup("Error with username or password!");
-				header("login.php");
+				alert("Error with username or password!");
+				header('login.php');
 			}
 		} else {
 			return false;
@@ -112,14 +114,16 @@
 				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 
-				alert_popup("Successful admin login!");
-				header("file_check.php");
+				echo '<script>
+						alert("Successful admin login!");
+						window.location = "file_check.php";
+				      </script>';
 			} else {
-				alert_popup("Error with username or password!");
+				alert("Error with username or password!");
 				header('login.php');
 			}
 		}else{
-			alert_popup("Error with username or password!");
+			alert("Error with username or password!");
 			header('login.php');
 		}
 
