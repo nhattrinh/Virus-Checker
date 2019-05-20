@@ -34,7 +34,7 @@
 	}
 
 	//Alert function
-	function alert($msg) {
+	function alert_popup($msg) {
     echo "<script type='text/javascript'>alert('$msg');</script>";
 	}
 
@@ -87,10 +87,10 @@
 			if (!$result) mysqli_error($conn);
 
 			mysqli_refresh($conn, MYSQLI_REFRESH_LOG);
-			alert("Account successfully created");
+			alert_popup("Account successfully created");
 			header("location: login.php");
 		}else{
-			alert("Invalid username/password combination");
+			alert_popup("Invalid username/password combination");
 			header("location: account.php");
 		}
 
