@@ -45,7 +45,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES ('Fabio','Di Troia','admin@sjsu.edu','20217130aa99dad573b0662e5e710843','%9Xbqb','*7(Dz_.t:LZNZ:',1);
+INSERT INTO `admin` VALUES ('Fabio','Di Troia','admin@sjsu.edu','defb80fa9723787862a1e7cbbc5db9f8', 'haha','hoho',1);
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
