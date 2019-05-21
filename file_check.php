@@ -7,7 +7,6 @@
 
 <!-- HTML Form -->
 <!DOCTYPE html>
-
 <html>
 <head>
 	<title>Infected File</title>

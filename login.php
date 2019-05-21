@@ -1,36 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Login</title>
-	<meta charset="utf-8">
- 	<meta name="viewport" content="width=device-width, initial-scale=1">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</head>
-<center>
-	<div class="col-6">
-	<form class="text-center border border-light p-5" formaction="login.php" method="post">
-	<p class="h4 mb-4">Sign in</p>
- 		<!-- Email -->
-		<input name="email"    type="email"    placeholder="email"     required="" class="form-control mb-4"/>
-		<!-- Password -->
-		<input name="password" type="password" placeholder="password"  required="" class="form-control mb-4"/>
-		<!-- Sign in button -->
-		<button class="btn btn-outline-primary btn-block my-4" type="submit">Sign in</button>
-		<!-- Register -->
-		<p>Not a member?
-        <a href = "account.php">Register</a>
-    	</p>
-	<form>
-	</div>
-</center>
-</html>
-
 <?php
 	require_once "db_login.php";
 	require_once "session_verification.php";
+
+	echo <<< _END
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Login</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	</head>
+	<center>
+		<div class="col-6">
+		<form class="text-center border border-light p-5" formaction="login.php" method="post">
+		<p class="h4 mb-4">Sign in</p>
+			<!-- Email -->
+			<input name="email"    type="email"    placeholder="email"     required="" class="form-control mb-4"/>
+			<!-- Password -->
+			<input name="password" type="password" placeholder="password"  required="" class="form-control mb-4"/>
+			<!-- Sign in button -->
+			<button class="btn btn-outline-primary btn-block my-4" type="submit">Sign in</button>
+			<!-- Register -->
+			<p>Not a member?
+			<a href = "account.php">Register</a>
+			</p>
+		<form>
+		</div>
+	</center>
+	</html>
+_END;
 
 	//Alert function
 	function alert($msg) {
