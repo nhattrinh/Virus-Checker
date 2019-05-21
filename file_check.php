@@ -45,16 +45,16 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<br/><br/>
-		
+
 	<button type="submit" class="btn btn-outline-primary waves-effect">Submit</button>
 
 	<br/><br/>
 	</form>
 	</div>
 	<?php
-		if (isset($_SESSION['admin'])) 
+		if (isset($_SESSION['admin']))
 		{
 			echo <<<_END
 				<div><form class="col-md-5" action="file_check.php" method="post" enctype="multipart/form-data">
@@ -79,16 +79,16 @@ _END;
 </html>
 
 <?php
-	require_once 'db_login.php'; 
+	require_once 'db_login.php';
 
 	function fixString($conn, $string) {
 		if (get_magic_quotes_gpc()) $string = stripslashes($string);
 		return $conn->real_escape_string($string);
 	}
-									  
+
 	if(isset($_FILES['check_file']['name']) && (isset($_SESSION['user']) || isset($_SESSION['admin'])))
 	{
-		$conn = new mysqli($hn, $un, $pw, $db);
+		$conn = new mysqli($host, $user, $pass, $database);
 		if ($conn->connect_error) mysqli_error($conn->connect_error);
 
 		move_uploaded_file($_FILES['check_file']['tmp_name'], $_FILES['check_file']['name']);
@@ -100,7 +100,7 @@ _END;
 
 	if(isset($_FILES['add_virus']['name']) && isset($_POST['virus_name']) && isset($_SESSION['admin']))
 	{
-		$conn = new mysqli($hn, $un, $pw, $db);
+		$conn = new mysqli($host, $user, $pass, $database);
 		if ($conn->connect_error) mysqli_error($conn->connect_error);
 
 		$name = fixString($conn, $_POST['virus_name']);
@@ -115,15 +115,15 @@ _END;
 		$conn->close();
 	}
 
-	function getSignatureHex($file, $size) 
+	function getSignatureHex($file, $size)
 	{
 		$signature = "";
 
-		if($handle = fopen($file, 'r')) 
+		if($handle = fopen($file, 'r'))
 		{
 			$contents = fread($handle, $size);
 
-			for ($i = 0; $i < $size; $i++) 
+			for ($i = 0; $i < $size; $i++)
 			{
 				$ascii = $contents[$i];
 				$dec = ord($ascii);
@@ -139,16 +139,16 @@ _END;
 	function showRecordedInserted($conn, $name, $signature)
 	{
 
-		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) {
-			$result->bind_param('ss', $name, $signature); 
-			$result->execute(); 
-			$result->store_result(); 
+		if ($res = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) {
+			$res->bind_param('ss', $name, $signature);
+			$res->execute();
+			$res->store_result();
 		}
-		else 
+		else
 			mysqli_error($conn->error);
-		if ($result->num_rows == 1) {
-			$result->bind_result($name, $signature, $date, $time, $id); 
-			$result->fetch(); 
+		if ($res->num_rows == 1) {
+			$res->bind_result($name, $signature, $date, $time, $id);
+			$res->fetch();
 			echo "<center><b>Added to table Virus in CS174 DB</b></center><br/><br/>";
 			echo "<center><table>
 			<tr>
@@ -166,7 +166,7 @@ _END;
 		    echo "</tr>";
 		    echo "</table></center><br><br><br>";
 		}
-		else 
+		else
 			mysqli_error($conn->error);
 	}
 
@@ -176,22 +176,22 @@ _END;
 		$virusArray = array();
 		$infectedBytes = $signature;
 		$query = "SELECT * FROM virus;";
-		$result = $conn->query($query);
-		if (!$result) mysqli_error($conn->error);
+		$res = $conn->query($query);
+		if (!$res) mysqli_error($conn->error);
 
-		for ($i = 0; $i < $result->num_rows; $i++)
+		for ($i = 0; $i < $res->num_rows; $i++)
 		{
-			$result->data_seek($i);
-			$row = $result->fetch_array(MYSQLI_NUM);
+			$res->data_seek($i);
+			$row = $res->fetch_array(MYSQLI_NUM);
 			$virus_name = $row[0];
 			$virusSignature = $row[1];
 			if (strlen($signature) >= strlen($virusSignature))
 			{
 				if (!empty($virusSignature) && strpos($signature, $virusSignature) !== false) { // infected file
-   					echo '<script type="text/javascript">alert("File is infected! Virus name is ' . $virus_name . '"); </script>';					
+   					echo '<script type="text/javascript">alert("File is infected! Virus name is ' . $virus_name . '"); </script>';
    					array_push($virusArray, array($virus_name, $virusSignature));
 					$infectedBytes = markInfectedBytes($virusSignature, $infectedBytes);
-					$isInfected = true; 
+					$isInfected = true;
 				}
 			}
 		}
@@ -199,27 +199,27 @@ _END;
 		if(!$isInfected)
 			echo '<script> alert("Secure file"); window.location = "file_check.php"; </script>';
 		showInfectedFileResults($infectedBytes, $virusArray);
-		$result->close();
+		$res->close();
 	}
 
 	function virusExists($conn, $name, $signature)
 	{
 
-		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) { // create a prepare statement
-			$result->bind_param('ss', $name, $signature);
-			$result->execute();
-			$result->store_result();
+		if ($res = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) { // create a prepare statement
+			$res->bind_param('ss', $name, $signature);
+			$res->execute();
+			$res->store_result();
 		}
-		else 
+		else
 			mysqli_error($conn->error);
-		
-		if ($result->num_rows == 1) {
-			$result->close();
+
+		if ($res->num_rows == 1) {
+			$res->close();
 			return true;
 		}
 
-		$result->close();		
-		
+		$res->close();
+
 		return false;
 	}
 
@@ -263,14 +263,14 @@ _END;
  		$date  = date("Y-m-d");
 		$time  = date("H:i:s");
 
-		if ($result = $conn->prepare("INSERT INTO virus(name, signature, date, time) VALUES(?,?,?,?)")) {
-			$result->bind_param('ssss', $name, $signature, $date, $time);
-			$result->execute();
-			$result->close();
+		if ($res = $conn->prepare("INSERT INTO virus(name, signature, date, time) VALUES(?,?,?,?)")) {
+			$res->bind_param('ssss', $name, $signature, $date, $time);
+			$res->execute();
+			$res->close();
 			echo '<script> alert("Virus added!!!!"); </script>';
 			showRecordedInserted($conn, $name, $signature);
 		}
 		else
-			mysqli_error($conn->error); 	
+			mysqli_error($conn->error);
 	}
 ?>
