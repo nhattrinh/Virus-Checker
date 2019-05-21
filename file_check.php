@@ -58,7 +58,8 @@
 		{
 			echo <<<_END
 				<div><form class="col-md-5" action="file_check.php" method="post" enctype="multipart/form-data">
-				<br><font size="5"><b>Add Infected File Submission</b></font><br><br>
+				<br/><font size="5"><b>Add Infected File Submission</b></font>
+				<br/><br/>
 				<input class="form-control" name="virus_name" type="text" placeholder="Virus Name" required=""><br/>
 				<div class="custom-file">
 					<input type="file" class="custom-file-input" name="add_virus" required=""/>
@@ -132,7 +133,7 @@ _END;
 			return $sig;
 		}
 		else
-			die("File does not exist or you lack permission to open it");
+			die("Problem with opening the file!");
 	}
 
 	function scan_file($conn, $sig)
@@ -154,7 +155,7 @@ _END;
 			if (strlen($sig) >= strlen($virus_sig))
 			{
 				if (!empty($virus_sig) && strpos($sig, $virus_sig) !== false) { // infected file
-   					echo '<script type="text/javascript">alert("Infected File -> Virus Name: ' . $virus_name . '"); </script>';					
+   					echo '<script type="text/javascript">alert("This file is infected! The virus name is ' . $virus_name . '"); </script>';					
    					array_push($virus_list, array($virus_name, $virus_sig));
    					//$pos = strpos($sig, $virus_sig);
    					//$end = $pos + strlen($virus_sig) - 1;

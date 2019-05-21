@@ -56,6 +56,44 @@
 		$conn->close();
 	}
 
+	function admin_table($conn, $un, $pw){
+		if ($result = $conn->prepare("SELECT fname, password, salt1, salt2 FROM admin WHERE username=?;")) {
+			$result->bind_param('s', $un);
+			$result->execute();
+			$result->store_result();
+		} else {
+			mysqli_error($conn->error);
+		}
+
+		if ($result->num_rows == 1) {
+			$result->bind_result($fn, $db_pw, $s1, $s2);
+			$result->fetch();
+			$salt1 = $s1;
+			$salt2 = $s2;
+			$token = hash('md5', "$salt1$pw$salt2");
+
+			if ($token === $db_pw) {
+				session_start();
+				$_SESSION['admin'] = 1;
+				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+
+				echo '<script>
+						alert("Successful admin login!");
+						window.location = "file_check.php";
+				      </script>';
+			} else {
+				alert("Error with username or password!");
+				header('login.php');
+			}
+		} else {
+			alert("Error with username or password!");
+			header('login.php');
+		}
+
+		$result->close();
+	}
+
 	function users_table($conn, $un, $pw){
 		if ($result = $conn->prepare("SELECT fname, password, salt1, salt2 FROM users NATURAL JOIN salt WHERE username=?;")) {
 			$result->bind_param('s', $un);
@@ -89,44 +127,6 @@
 		} else {
 			return false;
 		}
-		$result->close();
-	}
-
-	function admin_table($conn, $un, $pw){
-		if ($result = $conn->prepare("SELECT fname, password, salt1, salt2 FROM admin WHERE username=?;")) {
-			$result->bind_param('s', $un);
-			$result->execute();
-			$result->store_result();
-		}else{
-			mysqli_error($conn->error);
-		}
-
-		if ($result->num_rows == 1) {
-			$result->bind_result($fn, $db_pw, $s1, $s2);
-			$result->fetch();
-			$salt1 = $s1;
-			$salt2 = $s2;
-			$token = hash('md5', "$salt1$pw$salt2");
-
-			if ($token === $db_pw) {
-				session_start();
-				$_SESSION['admin'] = 1;
-				$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
-				$_SESSION['check'] = hash('md5', $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
-
-				echo '<script>
-						alert("Successful admin login!");
-						window.location = "file_check.php";
-				      </script>';
-			} else {
-				alert("Error with username or password!");
-				header('login.php');
-			}
-		}else{
-			alert("Error with username or password!");
-			header('login.php');
-		}
-
 		$result->close();
 	}
 ?>
