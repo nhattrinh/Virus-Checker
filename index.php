@@ -1,6 +1,6 @@
 <?php
 	require_once 'session_verification.php';
-	verify_session(basename(__FILE__));
+	verifySession(basename(__FILE__));
 ?>
 
 <!DOCTYPE html>

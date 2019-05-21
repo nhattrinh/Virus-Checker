@@ -28,7 +28,7 @@
 	require_once 'db_login.php'; 
 	require_once 'session_verification.php';
 
-	verify_session(basename(__FILE__)); // check the session
+	verifySession(basename(__FILE__)); // check the session
 
 	function fixString($conn, $string) {
 		if (get_magic_quotes_gpc()) $string = stripslashes($string);
@@ -67,16 +67,12 @@
 						$del_salt->bind_param('i', $id);
 						$del_salt->execute();
 						$del_salt->close();
-					}
-					else 
-						mysqli_error($conn->error);
-				}
-				else 
-					mysqli_error($conn->error);
+					} else mysqli_error($conn->error);
+				} else mysqli_error($conn->error);
 
 				echo 
 				'<script>
-					alert("Hi: '. $fn . ', you\'ve successfully deleted your account '. $un . '"); 
+					alert("You just deleted your account!"); 
 					window.location = "index.php";
 				</script>';
 			}

@@ -37,7 +37,7 @@
     echo "<script type='text/javascript'>alert('$msg');</script>";
 	}
 
-	verify_session(basename(__FILE__));
+	verifySession(basename(__FILE__));
 
 	function fixString($conn, $string) {
 		if (get_magic_quotes_gpc()) $string = stripslashes($string);

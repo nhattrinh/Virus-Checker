@@ -2,7 +2,7 @@
 
 	require_once 'session_verification.php'; // programmer defined methods to prevent session hijacking
 
-	verify_session(basename(__FILE__)); // check the session
+	verifySession(basename(__FILE__)); // check the session
 ?>
 
 <!-- HTML Form -->
@@ -72,8 +72,8 @@ _END;
 		}
 	?>
 	<form>
-		<br><button type="submit" formaction="logout.php" class="btn btn-outline-danger waves-effect">Logout</button>
-		<br><br>
+		<br/><button type="submit" formaction="logout.php" class="btn btn-outline-danger waves-effect">Logout</button>
+		<br/><br/>
 	</form>
 </center>
 </html>
@@ -92,8 +92,8 @@ _END;
 		if ($conn->connect_error) mysqli_error($conn->connect_error);
 
 		move_uploaded_file($_FILES['check_file']['tmp_name'], $_FILES['check_file']['name']);
-		$sig = signature_hex($_FILES['check_file']['name'], $_FILES['check_file']['size']);
-		scan_file($conn, $sig);
+		$sig = getSignatureHex($_FILES['check_file']['name'], $_FILES['check_file']['size']);
+		scanFile($conn, $sig);
 
 		$conn->close();
 	}
@@ -106,7 +106,7 @@ _END;
 		$name = fixString($conn, $_POST['virus_name']);
 
 		move_uploaded_file($_FILES['add_virus']['tmp_name'], $_FILES['add_virus']['name']);
-		$sig = signature_hex($_FILES['add_virus']['name'], $_FILES['add_virus']['size']);
+		$sig = getSignatureHex($_FILES['add_virus']['name'], $_FILES['add_virus']['size']);
 
  		$sig = substr($sig, 0, 20);
 
@@ -115,7 +115,7 @@ _END;
 		$conn->close();
 	}
 
-	function signature_hex($file, $size) 
+	function getSignatureHex($file, $size) 
 	{
 		$sig = "";
 
@@ -136,12 +136,11 @@ _END;
 			die("Problem with opening the file!");
 	}
 
-	function scan_file($conn, $sig)
+	function scanFile($conn, $sig)
 	{
 		$infected = false;
 		$virus_list = array();
 		$infected_bytes = $sig;
-		//$infectied_pos = array();
 		$query = "SELECT * FROM virus;";
 		$result = $conn->query($query);
 		if (!$result) mysqli_error($conn->error);
@@ -157,55 +156,19 @@ _END;
 				if (!empty($virus_sig) && strpos($sig, $virus_sig) !== false) { // infected file
    					echo '<script type="text/javascript">alert("This file is infected! The virus name is ' . $virus_name . '"); </script>';					
    					array_push($virus_list, array($virus_name, $virus_sig));
-   					//$pos = strpos($sig, $virus_sig);
-   					//$end = $pos + strlen($virus_sig) - 1;
-   					//array_push($infectied_pos, "$pos-$end");
-					$infected_bytes = mark_infected_bytes($virus_sig, $infected_bytes);
+					$infected_bytes = markInfectedBytes($virus_sig, $infected_bytes);
 					$infected = true; 
 				}
 			}
-			/*
-			else
-			{
-				if (!empty($virus_sig) && strpos($virus_sig, $sig) !== false) { // infected file
-					echo '<script> alert("Infected file"); </script>';
-					array_push($virus_list, array($virus_name, $virus_sig));
-					$infected = true; 
-				}
-			}
-			*/
 		}
 
 		if(!$infected)
 			echo '<script> alert("Secure file"); window.location = "file_check.php"; </script>';
-		//print_r($infectied_pos);
-		//show_infected_file_results($infected_bytes, $infectied_pos, $virus_list);
-		show_infected_file_results($infected_bytes, $virus_list);
+		showInfectedFileResults($infected_bytes, $virus_list);
 		$result->close();
 	}
 
-	function add_virus($conn, $name, $sig)
-	{
-		if (record_exist_virus_tbl($conn, $name, $sig)) {
-			echo '<script> alert("Duplicate record"); window.location = "file_check.php"; </script>';
-			exit;
-		}
-
- 		$date  = date("Y-m-d");
-		$time  = date("H:i:s");
-
-		if ($result = $conn->prepare("INSERT INTO virus(name, signature, date, time) VALUES(?,?,?,?)")) { // create a prepare statement
-			$result->bind_param('ssss', $name, $sig, $date, $time);
-			$result->execute();
-			$result->close();
-			echo '<script> alert("Virus added"); </script>';
-			show_recorded_inserted($conn, $name, $sig);
-		}
-		else
-			mysqli_error($conn->error); 	
-	}
-
-	function record_exist_virus_tbl($conn, $name, $sig)
+	function virusExists($conn, $name, $sig)
 	{
 
 		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) { // create a prepare statement
@@ -226,10 +189,31 @@ _END;
 		return false;
 	}
 
-	function show_recorded_inserted($conn, $name, $sig)
+	function add_virus($conn, $name, $sig)
+	{
+		if (virusExists($conn, $name, $sig)) {
+			echo '<script> alert("Duplicate record"); window.location = "file_check.php"; </script>';
+			exit;
+		}
+
+ 		$date  = date("Y-m-d");
+		$time  = date("H:i:s");
+
+		if ($result = $conn->prepare("INSERT INTO virus(name, signature, date, time) VALUES(?,?,?,?)")) {
+			$result->bind_param('ssss', $name, $sig, $date, $time);
+			$result->execute();
+			$result->close();
+			echo '<script> alert("Virus added"); </script>';
+			showRecordedInserted($conn, $name, $sig);
+		}
+		else
+			mysqli_error($conn->error); 	
+	}
+
+	function showRecordedInserted($conn, $name, $sig)
 	{
 
-		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) { // create a prepare statement
+		if ($result = $conn->prepare("SELECT * FROM virus WHERE name=? AND signature=?;")) {
 			$result->bind_param('ss', $name, $sig); 
 			$result->execute(); 
 			$result->store_result(); 
@@ -239,7 +223,7 @@ _END;
 		if ($result->num_rows == 1) {
 			$result->bind_result($name, $sig, $date, $time, $id); 
 			$result->fetch(); 
-			echo "<center><b><font color='green'>Added Record to Database: CS 174 and Table: Virus</font></b></center><br><br>";
+			echo "<center><b>Added to table Virus in CS174 DB</b></center><br/><br/>";
 			echo "<center><table>
 			<tr>
 			<th><center>Virus Name</center></th>
@@ -260,7 +244,14 @@ _END;
 			mysqli_error($conn->error);
 	}
 
-	function show_infected_file_results($infected_bytes, $list)
+	function markInfectedBytes($find, $string)
+	{
+		$replace = "<font color='red'>$find</font>";
+		return str_replace($find, $replace, $string);
+	}
+
+
+	function showInfectedFileResults($infected_bytes, $list)
 	{
 		echo "<center><font color='red'><b>Infected Bytes:</b></font></center><br>";
 		echo $infected_bytes; echo "<br><br>";
@@ -282,11 +273,4 @@ _END;
 
 		echo "</table></center><br><br><br>";
 	}
-
-	function mark_infected_bytes($find, $string)
-	{
-		$replace = "<font color='red'>$find</font>";
-		return str_replace($find, $replace, $string);
-	}
-
 ?>

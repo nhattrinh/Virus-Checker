@@ -1,24 +1,23 @@
 <?php
-	function verify_session($current_page) 
+	function verifySession($currentPage) 
 	{
 		session_start();
 
-		if (different_user()) {
-			destroy_session_and_data();
+		if (isDifferentUser()) {
+			destroySessionAndData();
 			echo '<script> alert("Log in again due to a technical error."); window.location = "index.php"; </script>';
-		} else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $current_page !== 'file_check.php') {
+		} else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $currentPage !== 'file_check.php') {
 			header('Location: file_check.php');
 			exit;
-		}
-		else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $current_page === 'file_check.php') {
-		} else if ((!isset($_SESSION['user']) || !isset($_SESSION['admin'])) && $current_page === 'file_check.php') {
+		} else if ((isset($_SESSION['user']) || isset($_SESSION['admin'])) && $currentPage === 'file_check.php') {
+		} else if ((!isset($_SESSION['user']) || !isset($_SESSION['admin'])) && $currentPage === 'file_check.php') {
 			header('Location: index.php');
 		} else {
 			session_destroy();
 		}
 	}
 
-	function different_user() {
+	function isDifferentUser() {
 		if(isset($_SESSION['ip']) && isset($_SERVER['REMOTE_ADDR']) && isset($_SESSION['ua']) && isset($_SERVER['HTTP_USER_AGENT']) && 
 		   isset($_SESSION['check']) && isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_USER_AGENT'])) {
 			if ($_SESSION['ip'] != $_SERVER['REMOTE_ADDR'] || $_SESSION['ua'] != $_SERVER['HTTP_USER_AGENT'] ||  
@@ -28,7 +27,7 @@
 		return false;
 	}
 
-	function destroy_session_and_data() {
+	function destroySessionAndData() {
 		$_SESSION = array();
 		setcookie(session_name(), '', time() - 2592000, '/');
 		session_destroy();

@@ -48,7 +48,7 @@
 	    return $str;
 	}
 
-	verify_session(basename(__FILE__));
+	verifySession(basename(__FILE__));
 	$conn = new mysqli($hn, $un, $pw, $db);
 	if ($conn->connect_error) mysqli_error($conn);
 
